@@ -1,0 +1,21 @@
+{
+  "name": "phonebookbackend",
+  "version": "1.0.0",
+  "description": "names and numbers",
+  "main": "3001",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \\\"Error: no test Specified\\\" && exit 1"
+  },
+  "author": "Greg Chase",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
