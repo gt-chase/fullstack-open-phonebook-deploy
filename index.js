@@ -7,17 +7,17 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors())
 // app.use(morgan('tiny'));
-morgan.token('host', function(req, res) {
-  return req.hostname;
-});
+// morgan.token('host', function(req, res) {
+//   return req.hostname;
+// });
 
-morgan.token('param', function(req, res, param) {
-  return req.params[param];
-});
-morgan.token('new_person', function(req, res) {
-  return JSON.stringify(req.body)
-})
-app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms :new_person'));
+// morgan.token('param', function(req, res, param) {
+//   return req.params[param];
+// });
+// morgan.token('new_person', function(req, res) {
+//   return JSON.stringify(req.body)
+// })
+// app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms :new_person'));
 
 let data = [
   { 
