@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const axios = require('axios')
+const Person = require('.models/person')
 // const morgan = require('morgan')
 const cors = require('cors')
 
@@ -20,31 +22,11 @@ app.use(express.static('dist'))
 // })
 // app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms :new_person'));
 
-let data = [
-  { 
-    "id": "1",
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": "2",
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": "3",
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": "4",
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-]
 
 app.get('/api/data', (request, response) => {
-  response.json(data)
+  Person.find({}).then(data => {
+    response.json(data)
+  })
 })
 
 app.get('/info', async (request, response) => {
@@ -62,53 +44,29 @@ app.get('/info', async (request, response) => {
 })
 
 app.get('/api/data/:id', (request, response) => {
-  const id = request.params.id
-  const contact = data.find(person => person.id === id)
-
-  if (contact) {
-    response.json(contact)
-  } else {
-    response.status(404).end()
-  }
+  Person.findById(request.params.id).then(individual => {
+    response.json(individual)
+  })
 })
 
 app.post('/api/data', (request, response) => {
   const body = request.body
-  const generateId = () => {
-    let proposedId = Math.floor(Math.random() * 1000);
-    if (data.filter(n => n.id === proposedId).length > 0) {
-      return generateId();
-    } else {
-      return String(proposedId)
-    }
+
+  if (body.name === undefined) {
+    return response.status(400).json({error: 'name missing' })
   }
 
-  if (!body.name) {
-    return response.status(400).json({
-      error: 'name missing'
-    })
-  }
-  if (!body.number) {
-    return response.status(400).json({
-      error: 'number missing'
-    })
-  }
-  if (data.filter(n => n.name === body.name).length > 0) {
-    return response.status(400).json({
-      error: 'name already in use'
-    })
-  }
-
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
-    number: body.number,
-  }
+    number: body.number || '',
+  })
 
-  data = data.concat(person)
-
-  response.json(data)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
+
+  
 
 app.delete('/api/data/:id', (request, response) => {
   const id = request.params.id
@@ -119,7 +77,7 @@ app.delete('/api/data/:id', (request, response) => {
 
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
