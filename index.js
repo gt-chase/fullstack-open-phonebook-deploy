@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const axios = require('axios')
-const Person = require('.models/person')
+const Person = require('./models/person')
 // const morgan = require('morgan')
 const cors = require('cors')
 
