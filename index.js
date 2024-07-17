@@ -30,19 +30,19 @@ app.get('/api/data', (request, response) => {
   })
 })
 
-app.get('/info', async (request, response) => {
-  try {
-    const result = await axios.get('http://localhost:3001/api/data');
-    const data = result.data
-    let now = new Date().toString()
-    console.log('headers', response)
-    const numOfContacts = data.length;
-    response.send(`<p>Phone book has info for ${numOfContacts} people</p><p>${now}</p>`)
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    response.status(500).send('Internal Server Error');
-  }
-})
+// app.get('/info', async (request, response) => {
+//   try {
+//     const result = await axios.get('http://localhost:3001/api/data');
+//     const data = result.data
+//     let now = new Date().toString()
+//     console.log('headers', response)
+//     const numOfContacts = data.length;
+//     response.send(`<p>Phone book has info for ${numOfContacts} people</p><p>${now}</p>`)
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//     response.status(500).send('Internal Server Error');
+//   }
+// })
 
 app.get('/api/data/:id', (request, response) => {
   Person.findById(request.params.id).then(individual => {
