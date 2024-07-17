@@ -24,6 +24,7 @@ app.use(express.static('dist'))
 
 
 app.get('/api/data', (request, response) => {
+  console.log('inside get request')
   Person.find({}).then(data => {
     response.json(data)
   })
@@ -55,7 +56,7 @@ app.post('/api/data', (request, response) => {
   if (body.name === undefined) {
     return response.status(400).json({error: 'name missing' })
   }
-
+ 
   const person = new Person({
     name: body.name,
     number: body.number || '',
